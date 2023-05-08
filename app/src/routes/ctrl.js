@@ -41,9 +41,13 @@ const uploadFile = (req, res) => {
               });
 
             var array = fs.readFileSync(`./${newPath}`).toString().split("\n");
-            parse(array);
+            try{
+                parse(array, req.body.coreNum, req.body.taskNum);
+                res.redirect('/');
+            }catch(err) {
+                res.status(400).send('<script>alert("가능한 task와 core수를 입력하세요."); window.location.href="/";</script>');
+            }
             
-            res.redirect('/');
         }        
     };
     if (req.method === "POST"){

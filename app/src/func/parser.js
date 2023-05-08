@@ -1,17 +1,17 @@
-const parse = (array) => {
+const parse = (array, coreNum, taskNum) => {
     array.splice(0, 0, 0); // 모듈러 연산으로 파싱하기 위해 0번째에 빈 값 넣기
         var core = [];
-        for (var i = 0; i < 5; i++){
+        for (var i = 0; i < Number(coreNum); i++){
             core[i] = [];
         }
         var task = [];
-        for (var i = 0; i < 5; i++){
+        for (var i = 0; i < Number(taskNum); i++){
             task[i] = [];
         }
         var core_i = 0;
 
         for(i in array) {
-            if(i % 7 == 0 || i % 7 == 1){
+            if(i % (Number(coreNum)+2) == 0 || i % (Number(coreNum)+2) == 1){
                 core_i = 0;
                 continue;
             }
@@ -19,20 +19,22 @@ const parse = (array) => {
         var ex = array[i].split('\t');
         ex.pop();
         ex.shift();
-        if (ex.length != 5){
-            alert('분석 가능한 input을 넣어주세요')
-            return res.redirect('/');
+        if (ex.length != Number(taskNum)){
+            throw new Error();
         }
         for(var k = 0; k < ex.length; k++){
             try{
-                core[core_i].push(Number(ex[k]));
+                core[core_i].push(Number(ex[k])); // Number로 형 변환이 불가한 경우
             }catch(e){
-                alert('숫자만 분석할 수 있습니다.');
-                return res.redirect('/');
+                throw new e;
             }
         }
         for (var k = 0; k < ex.length; k++){
-            task[k].push(Number(ex[k]))
+            try{
+                task[k].push(Number(ex[k])) // Number로 형 변환이 불가한 경우
+            }catch(e){
+                throw new e;
+            }
         }
         core_i++;
     }
