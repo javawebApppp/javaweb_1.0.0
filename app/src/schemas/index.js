@@ -21,7 +21,8 @@ const connect = () => {
     mongoose.connect(uri, {
       dbName: 'nodejs', // db name to actually save data
       useNewUrlParser: true,
-      // useCreateIndex: true,
+      useUnifiedTopology: true,
+      // useCreateIndex: true, // useCreateIndex는 더이상 지원하지 않음.
     })
     .then(() => {
       console.log('MongoDB connection successful');
