@@ -39,8 +39,7 @@ const parse = (array, coreNum, taskNum) => {
         core_i++;
     }
     // 여기에 console.log가 아닌 db에 저장하는 기능이 들어가야함
-    console.log(core); 
-    console.log(task);
+    return [core, task];
 };
 
 module.exports = parse;

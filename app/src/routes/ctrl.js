@@ -1,11 +1,13 @@
 // MVC controller역할 
 const { time } = require('console');
-const parse = require('../func/parser');
+const func = require('../func');
 const fs = require('fs');
 const multer = require('multer');
 const { parseArgs } = require('util');
 const uploadDir = 'uploads';
 const upload = multer({dest: uploadDir});  // upload 디렉토리 생성
+var corenum = 0;
+var tasknum = 0;
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }
@@ -42,7 +44,13 @@ const uploadFile = (req, res) => {
 
             var array = fs.readFileSync(`./${newPath}`).toString().split("\n");
             try{
-                parse(array, req.body.coreNum, req.body.taskNum);
+                const job = func.parse(array, req.body.coreNum, req.body.taskNum); // job[0] => core, job[1] => task
+                corenum = Number(req.body.coreNum)
+                tasknum = Number(req.body.taskNum)
+
+                func.push_db.push_core(job[0])
+                func.push_db.push_task(job[1])
+
                 res.redirect('/');
             }catch(err) {
                 res.status(400).send('<script>alert("가능한 task와 core수를 입력하세요."); window.location.href="/";</script>');
@@ -61,4 +69,6 @@ module.exports = {
     home,
     login,
     uploadFile,
+    corenum,
+    tasknum
 }

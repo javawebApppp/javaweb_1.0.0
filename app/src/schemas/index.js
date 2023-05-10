@@ -3,23 +3,15 @@ const Core = require('./core');
 const Task = require('./task');
 
 const uri = "mongodb+srv://jungtaekwon1019:chtw2001@taekwon.yl7ee71.mongodb.net/?retryWrites=true&w=majority";
-// 기본 요청 url : mongodb://localhost:27017/admin
-// const dbUrl = 'mongodb://' +
-//     'chtw2001:chtw2001' + // 관리자아이디 : 비밀번호
-//     '@' +
-//     'localhost' + // host
-//     ':27017' + // port
-//     '/admin'; // db : admin db는 로그인을 위한 db 
 
 // 몽구스 연결 함수
 const connect = () => {
   // if not for deployment, debugging on
-  mongoose.set('debug', true); // Make the mongo query pop up in the console.
-  console.log('Execute the connect function once');
+  //mongoose.set('debug', true); // verbose...
 
   return new Promise((resolve, reject) => {
     mongoose.connect(uri, {
-      dbName: 'nodejs', // db name to actually save data
+      dbName: 'nodejs',
       useNewUrlParser: true,
       useUnifiedTopology: true,
       // useCreateIndex: true, // useCreateIndex는 더이상 지원하지 않음.
