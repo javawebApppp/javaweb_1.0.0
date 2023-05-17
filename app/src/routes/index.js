@@ -8,6 +8,7 @@ const ctrl = require('./ctrl'); // controller 분리
 router.get('/', ctrl.home);
 router.get('/analyze', ctrl.analyze);
 router.get('/upload', ctrl.uploadFile);
+router.get('/aa', ctrl.ex);
 
 // Post Methods
 router.post('/upload', ctrl.uploadFile);

@@ -45,8 +45,24 @@ mongoose.connection.on('disconnected', () => {
   connect(); // 연결 재시도
 });
 
+const dropDatabase = () => {
+  console.log('hihih')
+  return new Promise((resolve, reject) => {
+    mongoose.connection.db.dropDatabase()
+      .then(() => {
+        console.log('Database dropped successfully.');
+        resolve();
+      })
+      .catch((error) => {
+        console.log('Error dropping the database:', error);
+        reject(error);
+      });
+  });
+};
+
 module.exports = {
   connect,
   Core,
   Task,
-}
+  dropDatabase,
+};
