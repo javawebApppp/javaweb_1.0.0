@@ -16,8 +16,8 @@ const home = (req, res) => {  // get()함수 내부의 콜백 함수가 controll
     res.render("index");
 };
 
-const login = (req, res) => {
-    res.render("login");
+const analyze = (req, res) => {
+    res.render("analyze");
 };
 
 const uploadFile = (req, res) => {
@@ -44,12 +44,13 @@ const uploadFile = (req, res) => {
             
                     try {
                         const job = func.parse(array, req.body.coreNum, req.body.taskNum); // job[0] => core, job[1] => task
-                        corenum = Number(req.body.coreNum)
-                        tasknum = Number(req.body.taskNum)
+                        corenum = Number(req.body.coreNum);
+                        tasknum = Number(req.body.taskNum);
             
-                        func.push_db.push_core(job[0])
-                        func.push_db.push_task(job[1])
-            
+                        func.push_db.push_core(job[0]);
+                        func.push_db.push_task(job[1]);
+                        // const a = func.pop_db.pop_core(1);
+                        // console.log(a); //이건 그냥 확인용
                         res.redirect('/');
                     } catch(err) {
                         res.status(400).send('<script>alert("가능한 task와 core수를 입력하세요."); window.location.href="/";</script>');
@@ -89,7 +90,7 @@ const uploadFile = (req, res) => {
 
 module.exports = {
     home,
-    login,
+    analyze,
     uploadFile,
     corenum,
     tasknum

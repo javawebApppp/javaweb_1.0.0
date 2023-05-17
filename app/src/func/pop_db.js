@@ -6,29 +6,47 @@ const CoreModel = mongoose.model('Core', db.Core);
 const TaskModel = mongoose.model('Task', db.Task);
 
 
-const pop_core = () => {
-  var core_ary = [];
-  for(var i = 0; i<num.corenum; i++) {
+const pop_core = async (num) => {
     try {
-      const core = CoreModel.findOne({ name: `core${i}` });
-      core_ary.push(core);
+      const core = await CoreModel.findOne({ name: `core${num}` });
+      return core.ary;
     } catch (err) {
       console.error(err);
     }
-  return core_ary;
-}};
+};
 
-const pop_task = () => {
-  var task_ary = [];
-  for(var i = 0; i<num.tasknum; i++) {
+const pop_task = async (num) => {
     try {
-      const task = TaskModel.findOne({ name: `task${i}` });
-      task_ary.push(task);
+      const task = await TaskModel.findOne({ name: `task${num}` });
+      return task.ary
     } catch (err) {
       console.error(err);
     }
-  return core_ary;
-}};
+};
+
+// const pop_core = () => {
+//   var core_ary = [];
+//   for(var i = 0; i<num.corenum; i++) {
+//     try {
+//       const core = CoreModel.findOne({ name: `core${i}` });
+//       core_ary.push(core);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   return core_ary;
+// }};
+
+// const pop_task = () => {
+//   var task_ary = [];
+//   for(var i = 0; i<num.tasknum; i++) {
+//     try {
+//       const task = TaskModel.findOne({ name: `task${i}` });
+//       task_ary.push(task);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   return core_ary;
+// }};
 
 module.exports = {
   pop_core,

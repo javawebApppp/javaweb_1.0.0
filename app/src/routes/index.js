@@ -6,7 +6,7 @@ const ctrl = require('./ctrl'); // controller 분리
 
 // GET Methods
 router.get('/', ctrl.home);
-router.get('/login', ctrl.login);
+router.get('/analyze', ctrl.analyze);
 router.get('/upload', ctrl.uploadFile);
 
 // Post Methods
