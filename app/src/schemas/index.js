@@ -3,6 +3,7 @@ const Core = require('./core');
 const Task = require('./task');
 
 const uri = "mongodb+srv://jungtaekwon1019:password_for_javaweb@taekwon.yl7ee71.mongodb.net/?retryWrites=true&w=majority";
+let connection;
 
 // 몽구스 연결 함수
 const connect = () => {
@@ -10,7 +11,7 @@ const connect = () => {
   //mongoose.set('debug', true); // verbose...
 
   return new Promise((resolve, reject) => {
-    mongoose.connect(uri, {
+    const connection = mongoose.connect(uri, {
       dbName: 'nodejs',
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -18,7 +19,7 @@ const connect = () => {
     })
     .then(() => {
       console.log('MongoDB connection successful');
-      resolve();
+      resolve(connection, mongoose);
     })
     .catch((error) => {
       console.log('MongoDB connection error', error);
@@ -65,4 +66,5 @@ module.exports = {
   Core,
   Task,
   dropDatabase,
+  connection,
 };

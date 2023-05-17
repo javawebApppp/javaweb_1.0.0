@@ -6,23 +6,23 @@ const multer = require('multer');
 const { parseArgs } = require('util');
 const uploadDir = 'uploads';
 const upload = multer({dest: uploadDir});  // upload 디렉토리 생성
-var corenum = 0;
-var tasknum = 0;
+// var corenum = 0;
+// var tasknum = 0;
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }
 
-const home = (req, res) => {  // get()함수 내부의 콜백 함수가 controller역할
-    res.render("index");
-};
+// const home = (req, res) => {  // get()함수 내부의 콜백 함수가 controller역할
+//     res.render("index");
+// };
 
-const analyze = (req, res) => {
-    res.render("analyze");
-};
+// const analyze = (req, res) => {
+//     res.render("analyze");
+// };
 
-const ex = (req, res) => {
-    res.render("aa");
-};
+// const ex = (req, res) => {
+//     res.render("aa");
+// };
 
 const uploadFile = async(req, res) => {
     // 파일 저장하고 홈 페이지로 리다이렉트 해야함
@@ -44,25 +44,16 @@ const uploadFile = async(req, res) => {
                 } else {
                     console.log(`File renamed from ${oldPath} to ${newPath}`);
             
-                    var array = fs.readFileSync(`./${newPath}`).toString().split("\n");
+                    const array = fs.readFileSync(`./${newPath}`).toString().split("\n");
             
                     try {
-                        const job = func.parse(array, req.body.coreNum, req.body.taskNum); // job[0] => core, job[1] => task
-                        corenum = Number(req.body.coreNum);
-                        tasknum = Number(req.body.taskNum);
-                        // controller 코드
-                        try {
-                            func.pop_db.pop_core(1); //db에 데이터가 없으면 
-                            await func.drop_db();     // 여기서 await를 사용하여 함수가 완료될 때까지 기다립니다.
-                        } catch (err) {
-                            console.log("there is no data, init data");
-                        } finally {
-                            func.push_db.push_core(job[0]);         // drop하고 데이터 넣기
-                            func.push_db.push_task(job[1]);         // core와 task는 0idx~
-                            res.redirect("/");
-                        }
-                        
-                        
+                        const job = await func.parse(array, req.body.coreNum, req.body.taskNum); // job[0] => core, job[1] => task
+                        // corenum = Number(req.body.coreNum);
+                        // tasknum = Number(req.body.taskNum);
+
+                        func.push_db.push_core(job[0]);         // drop하고 데이터 넣기
+                        func.push_db.push_task(job[1]);         // core와 task는 0idx~
+                        res.redirect("/");
                     } catch(err) {
                         res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
                         res.redirect('/')
@@ -72,17 +63,18 @@ const uploadFile = async(req, res) => {
         }        
     };
     if (req.method === "POST"){
+        await func.drop_db();
         uploaded(req, res, uploadCallback);
     } else{
-        res.render('upload')
+        res.render('index')
     }
 };
 
 module.exports = {
-    home,
-    analyze,
+    // home,
+    // analyze,
     uploadFile,
-    ex,
-    corenum,
-    tasknum,
+    // ex,
+    // corenum,
+    // tasknum,
 }

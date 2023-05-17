@@ -1,15 +1,17 @@
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const db = require('../schemas');
+const connect = require('../schemas').connect;
 
 const drop_db = async () => {
-  // 마지막으로 반환된 Promise를 반환합니다.
-  return new Promise(async (resolve, reject) => {
-    try {
-      resolve(); // 작업이 완료되면 resolve를 호출해 Promise가 완료됨을 나타냅니다.
-    } catch (err) {
-      console.log("Database dropped");
-    }
-  });
+  try {
+    await connect();  // 데이터베이스 연결
+    const dbName = mongoose.connection.db.databaseName; // 연결된 데이터베이스 이름 가져옴
+
+    await mongoose.connection.db.dropDatabase(); // 연결된 데이터베이스 삭제
+    console.log(`Database ${dbName} dropped`);
+  } catch (err) {
+    console.error("Error dropping the database: ", err);
+  }
 };
 
 module.exports = drop_db;
