@@ -5,10 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 데이터 뿌려주는 로직 여기에서 불러옴 -->
 </head>
 <body>
-    <form action="POST">
-        루트페이지
+    <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="datafile">
+        <input type="text", name="coreNum">
+        <input type="text", name="taskNum">
+        <input type="submit">
     </form>
+    <canvas id="profiler" style="height:300px; width:300px"></canvas>
+    
 </body>
 </html>

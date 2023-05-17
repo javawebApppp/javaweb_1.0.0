@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Core = require('./core');
 const Task = require('./task');
 
-const uri = "mongodb+srv://jungtaekwon1019:chtw2001@taekwon.yl7ee71.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://jungtaekwon1019:password_for_javaweb@taekwon.yl7ee71.mongodb.net/?retryWrites=true&w=majority";
 
 // 몽구스 연결 함수
 const connect = () => {

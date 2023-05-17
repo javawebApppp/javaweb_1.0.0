@@ -12,5 +12,4 @@ const drop_db = async () => {
   });
 };
 
-
 module.exports = drop_db;
