@@ -1,2 +1,39 @@
-// have to make logic to spread data by index
-const profiler = document.getElementById('profiler').getContext("2d");
+const loader = require('./pop_db');
+
+function prettier(type, num, corenum, tasknum) {
+    const ary = {};
+    ary.min = [];
+    ary.max = [];
+    ary.avg = [];
+    console.log(corenum, tasknum)
+    if (type === 'core'){
+        for(var i = 0; i<tasknum; i++){
+            const tasks = loader.pop_task(i);
+            const ex_ary = [];
+            for(var j = num; j<tasks.length; j += corenum){
+                ex_ary.push(tasks[j]);
+            }
+            ary.min.push(Math.min(...ex_ary));
+            ary.max.push(Math.max(...ex_ary));
+            ary.avg.push(ex_ary.reduce((acc, cur) => acc + cur, 0) / ex_ary.length);
+
+        }
+    }else{
+        for(var i = 0; i<corenum; i++){
+            const cores = loader.pop_core(i);
+            const ex_ary = [];
+            for(var j = num; j<cores.length; j += tasknum){
+                ex_ary.push(cores[j]);
+            }
+            ary.min.push(Math.min(...ex_ary));
+            ary.max.push(Math.max(...ex_ary));
+            ary.avg.push(ex_ary.reduce((acc, cur) => acc + cur, 0) / ex_ary.length);
+
+        }
+    }
+    return ary;
+}
+
+module.exports = {
+    prettier,
+}

@@ -8,8 +8,10 @@ const TaskModel = mongoose.model('Task', db.Task);
 
 const pop_core = async (num) => {
     try {
-      const core = await CoreModel.findOne({ name: `core${num}` });
-      return core.ary;
+      await CoreModel.findOne({ name: `core${num}` })
+      .then((core)=>{
+        return core.ary;
+      });
     } catch (err) {
       console.error(err);
     }
@@ -17,8 +19,10 @@ const pop_core = async (num) => {
 
 const pop_task = async (num) => {
     try {
-      const task = await TaskModel.findOne({ name: `task${num}` });
-      return task.ary
+      await TaskModel.findOne({ name: `task${num}` })
+      .then((task)=>{
+        return task.ary;
+      });
     } catch (err) {
       console.error(err);
     }

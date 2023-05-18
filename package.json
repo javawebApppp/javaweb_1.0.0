@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/javawebApppp/Apppp#readme",
   "dependencies": {
+    "chart.js": "^4.3.0",
     "chokidar": "^3.5.3",
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.9",

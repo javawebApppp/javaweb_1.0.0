@@ -1,22 +1,108 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- 데이터 뿌려주는 로직 여기에서 불러옴 -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <form action="/" method="POST" enctype="multipart/form-data">
-        <input type="file" name="datafile">
-        <input type="text", name="coreNum">
-        <input type="text", name="taskNum">
-        <input type="submit">
-    </form>
-    <canvas id="profiler" style="height:300px; width:300px"></canvas>
+  <canvas id="profiler"></canvas>
+  <form action="/" method="POST" enctype="multipart/form-data">
+    <input type="file" name="datafile">
+    <input type="text", name="coreNum">
+    <input type="text", name="taskNum">
+    <input type="submit">
+  </form>
+  <button class="" id="task2Button">Task 2</button>
+  <button class="" id="core1Button">Core 1</button>
+  <button class="" id="core2Button">Core 2</button>
+  <button class="" id="core3Button">Core 3</button>
+  <button class="" id="core4Button">Core 4</button>
+  <button class="" id="core5Button">Core 5</button>
+
+  <script>
+    // 태스크 버튼 이벤트 리스너
+    document.getElementById('task2Button').addEventListener('click', function () {
+      spread_data('task', 2);
+    });
+
+    // 코어 버튼 이벤트 리스너 추가
+    document.getElementById('core1Button').addEventListener('click', function () {
+      spread_data('core', 1);
+    });
+    document.getElementById('core2Button').addEventListener('click', function () {
+      spread_data('core', 2);
+    });
+    document.getElementById('core3Button').addEventListener('click', function () {
+      spread_data('core', 3);
+    });
+    document.getElementById('core4Button').addEventListener('click', function () {
+      spread_data('core', 4);
+    });
+    document.getElementById('core5Button').addEventListener('click', function () {
+      spread_data('core', 5);
+    });
+
+    let chart;
+
+    async function getData(type, num) {
+      const response = await fetch(`/${type}/${num}`);
+      const data = await response.json();
+      return data;
+    }
     
+    // 수정된 부분: 데이터를 가져올 때 labels 도 함께 가져옵니다.
+    async function spread_data(type, num) {
+      console.log("Fetching data for:", type, num);
+      const data = await getData(type, num);
+      //const labels = data.map((item) => item.label);
+      const minData = data.min;
+      const maxData = data.max;
+      const avgData = data.avg;
+
+      console.log("Data fetched:", data);
+
+      const profiler = document.getElementById('profiler').getContext('2d');
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(profiler, {
+        type: 'line',
+        data: {
+          labels: "labels",
+          datasets: [{
+            label: 'Min',
+            data: minData,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          }, {
+            label: 'Max',
+            data: maxData,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          }, {
+            label: 'Avg',
+            data: avgData,
+            borderColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        },
+      });
+    }
+
+    // 수정된 부분: 페이지 로드 시 첫 번째 차트를 표시하기 위해 함수를 호출합니다.
+    spread_data('core', 1);
+  </script>
 </body>
-</html> 
+</html>
