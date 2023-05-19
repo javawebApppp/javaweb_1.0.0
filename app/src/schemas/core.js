@@ -8,7 +8,7 @@ const Core = new Schema({
     // notnull이나 유니크 인덱스 같은건 원래 몽고디비에는 해당 설정이 없음. 
     // 몽구스에서 sql처럼 표현하기 위해 추가된 것!
     required: true, 
-    //unique: true, 
+    unique: true, 
   },
   ary: {
     type: Array, 

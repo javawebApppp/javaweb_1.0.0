@@ -3,31 +3,42 @@ const db = require('../schemas');
 const CoreModel = mongoose.model('Core', db.Core);
 const TaskModel = mongoose.model('Task', db.Task);
 
-const push_core = (core) =>{
-    try{
-        for (var i=0; i<core.length; i++){
-            const Core = new CoreModel({
-                name: `core${i}`,
-                ary: core[i],
-            });
-            Core.save();
-        }
-    }catch(e){
-        console.error(e);
-    };
+const push_core = async (core) => {
+  try {
+    const promises = core.map(async (coreItem, i) => {
+      const Core = new CoreModel({
+        name: `core${i}`,
+        ary: coreItem,
+      });
+      return Core.save(); // return을 이용하여 Promise 반환
+    });
+    await Promise.all(promises);
+    console.log('Core data saved successfully');
+  } catch (e) {
+    console.log('푸시에러');
+  }
 };
 
-const push_task = (task) =>{
-    for (var i=0; i<task.length; i++){
-        const Task = new TaskModel({
-            name: `task${i}`,
-            ary: task[i],
-        });
-        Task.save();
-    }
+const push_task = async (task) => {
+  try {
+    const promises = task.map(async (taskItem, i) => {
+      const Task = new TaskModel({
+        name: `task${i}`,
+        ary: taskItem,
+      });
+      return Task.save(); // return을 이용하여 Promise 반환
+    });
+    await Promise.all(promises);
+    console.log('Task data saved successfully');
+  } catch (e) {
+    console.log('푸시에러');
+  }
 };
+
+
+
 
 module.exports = {
-    push_core,
-    push_task
-}
+  push_core,
+  push_task
+};

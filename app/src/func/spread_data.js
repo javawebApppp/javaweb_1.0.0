@@ -1,14 +1,13 @@
-const loader = require('./pop_db');
+const { pop_core, pop_task } = require('./pop_db');
 
 function prettier(type, num, corenum, tasknum) {
     const ary = {};
     ary.min = [];
     ary.max = [];
     ary.avg = [];
-    console.log(corenum, tasknum)
     if (type === 'core'){
         for(var i = 0; i<tasknum; i++){
-            const tasks = loader.pop_task(i);
+            const tasks = pop_task(i);
             const ex_ary = [];
             for(var j = num; j<tasks.length; j += corenum){
                 ex_ary.push(tasks[j]);
@@ -20,7 +19,7 @@ function prettier(type, num, corenum, tasknum) {
         }
     }else{
         for(var i = 0; i<corenum; i++){
-            const cores = loader.pop_core(i);
+            const cores = pop_core(i);
             const ex_ary = [];
             for(var j = num; j<cores.length; j += tasknum){
                 ex_ary.push(cores[j]);
@@ -31,9 +30,8 @@ function prettier(type, num, corenum, tasknum) {
 
         }
     }
+    
     return ary;
 }
 
-module.exports = {
-    prettier,
-}
+module.exports = prettier;

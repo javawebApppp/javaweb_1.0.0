@@ -47,7 +47,6 @@ mongoose.connection.on('disconnected', () => {
 });
 
 const dropDatabase = () => {
-  console.log('hihih')
   return new Promise((resolve, reject) => {
     mongoose.connection.db.dropDatabase()
       .then(() => {
@@ -63,8 +62,8 @@ const dropDatabase = () => {
 
 module.exports = {
   connect,
+  dropDatabase,
   Core,
   Task,
-  dropDatabase,
   connection,
 };

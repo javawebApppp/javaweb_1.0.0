@@ -11,8 +11,8 @@
   <canvas id="profiler"></canvas>
   <form action="/" method="POST" enctype="multipart/form-data">
     <input type="file" name="datafile">
-    <input type="text", name="coreNum">
-    <input type="text", name="taskNum">
+    <input type="number", name="coreNum">
+    <input type="number", name="taskNum">
     <input type="submit">
   </form>
   <button class="" id="task2Button">Task 2</button>
@@ -57,7 +57,7 @@
     async function spread_data(type, num) {
       console.log("Fetching data for:", type, num);
       const data = await getData(type, num);
-      //const labels = data.map((item) => item.label);
+      //const labels = data.map((item) => item.label); //label이 없음 만들어야함
       const minData = data.min;
       const maxData = data.max;
       const avgData = data.avg;
@@ -102,7 +102,8 @@
     }
 
     // 수정된 부분: 페이지 로드 시 첫 번째 차트를 표시하기 위해 함수를 호출합니다.
-    spread_data('core', 1);
+    //spread_data('core', 1);
   </script>
+
 </body>
 </html>
