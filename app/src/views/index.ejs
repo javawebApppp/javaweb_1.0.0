@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <canvas id="profiler"></canvas>
+  <canvas id="profiler" ></canvas>
   <form action="/" method="POST" enctype="multipart/form-data">
     <input type="file" name="datafile">
     <input type="number" , name="coreNum">
@@ -30,7 +30,7 @@
   <button class="" id="task4Button">Task 4</button>
   <button class="" id="task5Button">Task 5</button>
 
-  <script>
+  <script>   
     // 코어 버튼 이벤트 리스너 추가
     document.getElementById('core1Button').addEventListener('click', function () { spread_data('core', 0); });
     document.getElementById('core2Button').addEventListener('click', function () { spread_data('core', 1); });
@@ -52,6 +52,11 @@
       let data = await response.json();
       return await data;
     }
+    const typecheck = (type) => {
+      if (type == 'core'){
+        return "task";
+      } return "core";
+    }
 
     // 수정된 부분: 데이터를 가져올 때 labels 도 함께 가져옵니다.
     async function spread_data(type, num) {
@@ -71,7 +76,7 @@
       chart = new Chart(profiler, {
         type: 'line',
         data: {
-          labels: "labels",
+          labels: [typecheck(type)+"1", typecheck(type)+"2", typecheck(type)+"3", typecheck(type)+"4", typecheck(type)+"5"],
           datasets: [{
             label: 'Min',
             data: minData,
@@ -100,9 +105,8 @@
     }
 
     // 수정된 부분: 페이지 로드 시 첫 번째 차트를 표시하기 위해 함수를 호출합니다.
-    //spread_data('core', 1);
+    spread_data('core', 0);
   </script>
-
 </body>
 
 </html>

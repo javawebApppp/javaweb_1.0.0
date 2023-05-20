@@ -76,7 +76,7 @@ const uploadFile = async (req, res) => {
         await drop_db();
         uploaded(req, res, uploadCallback);
     } else {
-        res.render('index')
+        res.render('index',  inputNumbers)
     }
 };
 

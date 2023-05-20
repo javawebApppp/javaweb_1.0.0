@@ -10,7 +10,9 @@ app.set('views', './src/views');  // 뷰 관리 디렉토리 MVC패턴 중 V역�
 app.set('view engine', 'ejs');  // 뷰 엔진 => ejs
 
 // register middleware => use()
+app.use(express.static(__dirname));
 app.use('/', home); // ./src/routes/index.js에서 export한 모듈 적용
+
 
 app.listen(PORT, () => {
    console.log(`server is sadasdrunning on port ${PORT}`);
