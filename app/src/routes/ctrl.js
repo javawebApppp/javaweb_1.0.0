@@ -47,9 +47,10 @@ const uploadFile = async (req, res) => {
                     console.log(`File renamed from ${oldPath} to ${newPath}`);
                 }
             });
-            const array = fs.readFileSync(`./${newPath}`).toString().split("\n");
+            const data = await fs.promises.readFile(`./${newPath}`, 'utf8');
+            const array = data.split('\n');
 
-            // try {
+            try {
             const corenum = Number(req.body.coreNum);
             const tasknum = Number(req.body.taskNum);
             await updateInputNumbers(corenum, tasknum);
@@ -66,10 +67,9 @@ const uploadFile = async (req, res) => {
             console.log('push_task completed successfully');
 
             res.redirect('/')
-            // } catch (err) {
-            //     res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
-            // }
-            //});
+            } catch (err) {
+                res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
+            }
         }
     };
     if (req.method === "POST") {

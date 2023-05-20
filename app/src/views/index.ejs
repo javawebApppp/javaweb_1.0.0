@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,52 +8,51 @@
   <title>Document</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <canvas id="profiler"></canvas>
   <form action="/" method="POST" enctype="multipart/form-data">
     <input type="file" name="datafile">
-    <input type="number", name="coreNum">
-    <input type="number", name="taskNum">
+    <input type="number" , name="coreNum">
+    <input type="number" , name="taskNum">
     <input type="submit">
   </form>
-  <button class="" id="task2Button">Task 2</button>
+
   <button class="" id="core1Button">Core 1</button>
   <button class="" id="core2Button">Core 2</button>
   <button class="" id="core3Button">Core 3</button>
   <button class="" id="core4Button">Core 4</button>
   <button class="" id="core5Button">Core 5</button>
 
+  <button class="" id="task1Button">Core 1</button>
+  <button class="" id="task2Button">Core 2</button>
+  <button class="" id="task3Button">Core 3</button>
+  <button class="" id="task4Button">Core 4</button>
+  <button class="" id="task5Button">Core 5</button>
+
   <script>
     // 태스크 버튼 이벤트 리스너
-    document.getElementById('task2Button').addEventListener('click', function () {
-      spread_data('task', 2);
-    });
+    document.getElementById('task1Button').addEventListener('click', function () { spread_data('task', 0); });
+    document.getElementById('task2Button').addEventListener('click', function () { spread_data('task', 1); });
+    document.getElementById('task3Button').addEventListener('click', function () { spread_data('task', 2); });
+    document.getElementById('task4Button').addEventListener('click', function () { spread_data('task', 3); });
+    document.getElementById('task5Button').addEventListener('click', function () { spread_data('task', 4); });
 
     // 코어 버튼 이벤트 리스너 추가
-    document.getElementById('core1Button').addEventListener('click', function () {
-      spread_data('core', 1);
-    });
-    document.getElementById('core2Button').addEventListener('click', function () {
-      spread_data('core', 2);
-    });
-    document.getElementById('core3Button').addEventListener('click', function () {
-      spread_data('core', 3);
-    });
-    document.getElementById('core4Button').addEventListener('click', function () {
-      spread_data('core', 4);
-    });
-    document.getElementById('core5Button').addEventListener('click', function () {
-      spread_data('core', 5);
-    });
+    document.getElementById('core1Button').addEventListener('click', function () { spread_data('core', 0); });
+    document.getElementById('core2Button').addEventListener('click', function () { spread_data('core', 1); });
+    document.getElementById('core3Button').addEventListener('click', function () { spread_data('core', 2); });
+    document.getElementById('core4Button').addEventListener('click', function () { spread_data('core', 3); });
+    document.getElementById('core5Button').addEventListener('click', function () { spread_data('core', 4); });
 
     let chart;
 
     async function getData(type, num) {
       const response = await fetch(`/${type}/${num}`);
-      const data = await response.json();
+      const data = await response;
       return data;
     }
-    
+
     // 수정된 부분: 데이터를 가져올 때 labels 도 함께 가져옵니다.
     async function spread_data(type, num) {
       console.log("Fetching data for:", type, num);
@@ -61,6 +61,7 @@
       const minData = data.min;
       const maxData = data.max;
       const avgData = data.avg;
+      console.log(data);
 
       console.log("Data fetched:", data);
 
@@ -106,4 +107,5 @@
   </script>
 
 </body>
+
 </html>

@@ -1,4 +1,5 @@
 const parse = async (array, coreNum, taskNum) => {
+    console.log(coreNum, taskNum);
     array.splice(0, 0, 0); // 모듈러 연산으로 파싱하기 위해 0번째에 빈 값 넣기
     var core = [];
     for (var i = 0; i < Number(coreNum); i++) {
