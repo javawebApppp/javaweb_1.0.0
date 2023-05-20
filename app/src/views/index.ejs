@@ -23,21 +23,14 @@
   <button class="" id="core3Button">Core 3</button>
   <button class="" id="core4Button">Core 4</button>
   <button class="" id="core5Button">Core 5</button>
-
-  <button class="" id="task1Button">Core 1</button>
-  <button class="" id="task2Button">Core 2</button>
-  <button class="" id="task3Button">Core 3</button>
-  <button class="" id="task4Button">Core 4</button>
-  <button class="" id="task5Button">Core 5</button>
+  <br>
+  <button class="" id="task1Button">Task 1</button>
+  <button class="" id="task2Button">Task 2</button>
+  <button class="" id="task3Button">Task 3</button>
+  <button class="" id="task4Button">Task 4</button>
+  <button class="" id="task5Button">Task 5</button>
 
   <script>
-    // 태스크 버튼 이벤트 리스너
-    document.getElementById('task1Button').addEventListener('click', function () { spread_data('task', 0); });
-    document.getElementById('task2Button').addEventListener('click', function () { spread_data('task', 1); });
-    document.getElementById('task3Button').addEventListener('click', function () { spread_data('task', 2); });
-    document.getElementById('task4Button').addEventListener('click', function () { spread_data('task', 3); });
-    document.getElementById('task5Button').addEventListener('click', function () { spread_data('task', 4); });
-
     // 코어 버튼 이벤트 리스너 추가
     document.getElementById('core1Button').addEventListener('click', function () { spread_data('core', 0); });
     document.getElementById('core2Button').addEventListener('click', function () { spread_data('core', 1); });
@@ -45,25 +38,29 @@
     document.getElementById('core4Button').addEventListener('click', function () { spread_data('core', 3); });
     document.getElementById('core5Button').addEventListener('click', function () { spread_data('core', 4); });
 
+    // 태스크 버튼 이벤트 리스너
+    document.getElementById('task1Button').addEventListener('click', function () { spread_data('task', 0); });
+    document.getElementById('task2Button').addEventListener('click', function () { spread_data('task', 1); });
+    document.getElementById('task3Button').addEventListener('click', function () { spread_data('task', 2); });
+    document.getElementById('task4Button').addEventListener('click', function () { spread_data('task', 3); });
+    document.getElementById('task5Button').addEventListener('click', function () { spread_data('task', 4); });
+
     let chart;
 
     async function getData(type, num) {
-      const response = await fetch(`/${type}/${num}`);
-      const data = await response;
-      return data;
+      let response = await fetch(`/${type}/${num}`);
+      let data = await response.json();
+      return await data;
     }
 
     // 수정된 부분: 데이터를 가져올 때 labels 도 함께 가져옵니다.
     async function spread_data(type, num) {
-      console.log("Fetching data for:", type, num);
-      const data = await getData(type, num);
-      //const labels = data.map((item) => item.label); //label이 없음 만들어야함
-      const minData = data.min;
-      const maxData = data.max;
-      const avgData = data.avg;
+      let data = await getData(type, num);
       console.log(data);
-
-      console.log("Data fetched:", data);
+      //const labels = data.map((item) => item.label); //label이 없음 만들어야함
+      let minData = data.min;
+      let maxData = data.max;
+      let avgData = data.avg;
 
       const profiler = document.getElementById('profiler').getContext('2d');
 

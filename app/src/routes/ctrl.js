@@ -80,15 +80,14 @@ const uploadFile = async (req, res) => {
     }
 };
 
-const spread_data = (req, res) => {
-    console.log('spread_data');
+const spread_data = async (req, res) => {
     try {
         const type = req.params.type;
         const num = req.params.num;
         const corenum = inputNumbers.corenum;
         const tasknum = inputNumbers.tasknum;
-        const data = prettier(type, num, corenum, tasknum);
-        res.json(data);
+        const data = await prettier(type, num, corenum, tasknum);
+        return res.json(data);
     } catch (e) {
         console.log('spread_data error');
     }
