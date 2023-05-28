@@ -1,3 +1,4 @@
+'use strict';
 const { parse, drop_db, push_core, push_task, prettier } = require('../func');
 const fs = require('fs');
 const multer = require('multer');
@@ -23,11 +24,18 @@ if (!fs.existsSync(uploadDir)) {
 const uploadFile = async (req, res) => {
     if (req.method === "POST") {
         await drop_db();
-        uploadMiddleware(req, res, async (err) => {
+        await uploadMiddleware(req, res, async (err) => {
             if (err) {
                 console.log('Error:', err);
                 res.status(500).send('Internal Server Error');
+            } else if (!req.file){
+                return res.status(400).send('<script>alert("datafile이 없습니다. 파일을 선택해주세요."); window.location.href="/";</script>');
             } else {
+                const { datafile, coreNum, taskNum } = req.body;
+                if (!coreNum || !taskNum) {
+                    return res.status(400).send('<script>alert("coreNum 또는 taskNum이 없습니다. 값을 입력해주세요."); window.location.href="/";</script>');
+                }
+
                 const data = await fs.promises.readFile('./uploads/inputFile.txt', 'utf8');
                 const array = data.split('\n');
 
@@ -46,12 +54,13 @@ const uploadFile = async (req, res) => {
                     res.render('../views/index', { data: updatedInputNumbers });
 
                 } catch (err) {
-                    res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
+                    res.status(400).send('<script>alert("적절하지 못한 데이터 입니다. 다시 확인하세요"); window.location.href="/";</script>');
                 }
             }
         });
     } else {
-        res.send('/');
+        const updatedInputNumbers = require('../../inputnumber');
+        res.render('../views/index', { data: updatedInputNumbers });
     }
 };
 
