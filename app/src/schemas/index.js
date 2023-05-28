@@ -7,15 +7,11 @@ let connection;
 
 // 몽구스 연결 함수
 const connect = () => {
-  // if not for deployment, debugging on
-  //mongoose.set('debug', true); // verbose...
-
   return new Promise((resolve, reject) => {
     const connection = mongoose.connect(uri, {
       dbName: 'nodejs',
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // useCreateIndex: true, // useCreateIndex는 더이상 지원하지 않음.
     })
     .then(() => {
       console.log('MongoDB connection successful');
@@ -35,8 +31,6 @@ connect()
     console.log('Error connecting to MongoDB:', error);
   });
 
-
-// 몽구스 커넥션에 이벤트 리스너를 달게 해준다. 에러 발생 시 에러 내용을 기록하고, 연결 종료 시 재연결을 시도한다.
 mongoose.connection.on('error', (error) => {
   console.error('몽고디비 연결 에러', error);
 });

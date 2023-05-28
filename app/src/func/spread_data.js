@@ -8,6 +8,9 @@ async function prettier(type, num, corenum, tasknum) {
     if (type === 'core'){
         for(var i = 0; i<tasknum; i++){
             const tasks = await pop_task(i);
+            if (!tasks){
+                return null;
+            }
             const ex_ary = [];
             for(var j = Number(num); j<tasks.length; j += Number(corenum)){
                 ex_ary.push(tasks[j]);
@@ -19,6 +22,9 @@ async function prettier(type, num, corenum, tasknum) {
     }else{
         for(var i = 0; i<corenum; i++){
             const cores = await pop_core(i);
+            if (!cores){
+                return null;
+            }
             const ex_ary = [];
             for(var j = Number(num); j<cores.length; j += Number(tasknum)){
                 ex_ary.push(cores[j]);

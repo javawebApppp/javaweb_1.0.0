@@ -1,9 +1,7 @@
-// const num = require('../routes/ctrl.js');
 const mongoose = require('mongoose');
 const db = require('../schemas');
 const CoreModel = mongoose.model('Core', db.Core);
 const TaskModel = mongoose.model('Task', db.Task);
-
 
 const pop_core = async (num) => {
     try {
@@ -12,7 +10,8 @@ const pop_core = async (num) => {
         return core.ary;
       });
     } catch (err) {
-      console.error(err);
+      console.error('db에 파일을 넣어주세요');
+      return null;
     }
 };
 
@@ -23,7 +22,8 @@ const pop_task = async (num) => {
         return task.ary;
       });
     } catch (err) {
-      console.error(err);
+      console.error('db에 파일을 넣어주세요');
+      return null;
     }
 };
 
