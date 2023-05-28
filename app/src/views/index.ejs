@@ -70,10 +70,22 @@
     async function spread_data(type, num) {
       let data = await getData(type, num);
       if (!data){
-        return alert("파일이 입력되지 않았습니다. 파일을 넣어주세요");
+        return alert("파일이 입력되지 않았습니다.파일을 넣어주세요",);
       }
       console.log(data);
-      //const labels = data.map((item) => item.label); //label이 없음 만들어야함
+      const corenum = '<%=data.corenum%>';
+      const tasknum = '<%=data.tasknum%>';
+      const labels = new Array();
+      if (type == 'core'){
+        for(var i=0; i<tasknum; i++){
+          labels.push(`${typecheck(type)}`+`${i+1}`);
+        }
+      }else{
+        for(var i=0; i<corenum; i++){
+          labels.push(`${typecheck(type)}`+`${i+1}`);
+        }
+      }
+
       let minData = data.min;
       let maxData = data.max;
       let avgData = data.avg;
@@ -87,7 +99,7 @@
       chart = new Chart(profiler, {
         type: `${chart_type}`,
         data: {
-          labels: [typecheck(type)+"1", typecheck(type)+"2", typecheck(type)+"3", typecheck(type)+"4", typecheck(type)+"5"],
+          labels: labels,//[typecheck(type)+"1", typecheck(type)+"2", typecheck(type)+"3", typecheck(type)+"4", typecheck(type)+"5"],
           datasets: [{
             label: 'Min',
             data: minData,
@@ -115,6 +127,7 @@
       });
     }
   </script>
+  <p><%=data.corenum%></p>
 </body>
 
 </html>

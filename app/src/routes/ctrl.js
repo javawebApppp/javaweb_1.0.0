@@ -41,7 +41,7 @@ const uploadFile = async (req, res) => {
                     console.log('push_core completed successfully');
                     push_task(job[1]);
                     console.log('push_task completed successfully');
-
+                    res.render('../views/index', {data: inputNumbers})
                     res.redirect('/')
                 } catch (err) {
                     res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
@@ -49,7 +49,7 @@ const uploadFile = async (req, res) => {
             }
         });
     } else {
-        res.render('index', inputNumbers)
+        res.render('../views/index', {data: inputNumbers})
     }
 };
 
