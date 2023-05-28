@@ -5,46 +5,107 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>javaweb profiler</title>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-Eg6PBG50RsU98bo6eOBWbrnXONyqOhR+kkwpym/sqdLIBf4MR0Cb3AP0WhZ2IXAC" crossorigin="anonymous"></script> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <div>
-    <canvas id="profiler" class="" style="height: 600px; width: 20px;"></canvas>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark">
+      <div class="container">
+        <div class="navbar-brand text-white">
+          <h1 class="mx-auto">javaweb profiler</h1>
+        </div>
+        <div class="text-white align-right">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+            id="modal">
+            How to use?
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">How to use?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container" style="margin:100px auto 20px auto;">
+      <form action="/" method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+          <input type="file" class="form-control pe-5 btn-outline-primary" id="inputGroupFile04" name="datafile">
+          <input type="number" class="form-control btn-outline-primary" name="coreNum" placeholder="coreNum">
+          <input type="number" class="form-control btn-outline-primary" name="taskNum" placeholder="taskNum">
+          <button class="btn btn-outline-primary" type="submit" id="inputGroupFileAddon04">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="container font-monospace">
+      <div>
+        <canvas id="profiler" class="" style="height: 400px; width: 20px;"></canvas>
+      </div>
+      <br />
+      <div>
+        <p class="">select chart :&nbsp;
+          <button class="btn btn-primary" id="line">line</button>
+          <button class="btn btn-primary" id="bar">bar</button>
+          <button class="btn btn-primary" id="doughnut">doughnut</button>
+        </p>
+      </div>
+      <div>
+        <p class="">select core &nbsp;:
+          <button class="btn" id="coreButtons"></button>
+          <br>
+        </p>
+        <p class="">select task &nbsp;:
+          <button class="btn" id="taskButtons"></button>
+          <br>
+        </p>
+      </div>
+    </div>
+
   </div>
-  
-  <form action="/" method="POST" enctype="multipart/form-data">
-    <input type="file" name="datafile">
-    <input type="number" name="coreNum" placeholder="coreNum">
-    <input type="number" name="taskNum" placeholder="taskNum">
-    <input type="submit">
-  </form>
-
-  <!-- 코어 버튼 추가되는 위치 -->
-  <div id="coreButtons"></div>
-  <br>
-  <!-- 태스크 버튼 추가되는 위치 -->
-  <div id="taskButtons"></div>
-  <br>
-
-  <button class="" id="line">line</button>
-  <button class="" id="bar">bar</button>
-  <button class="" id="doughnut">doughnut</button>
-
-  <script>   
+  <script>
     const corenum = '<%=data.corenum%>';
     const tasknum = '<%=data.tasknum%>';
 
     const coreButtons = document.getElementById('coreButtons');
+    const li = document.createElement('ol');
     for (let i = 1; i <= corenum; i++) {
       const button = document.createElement('button');
       button.textContent = `Core ${i}`;
       button.id = `core${i}Button`;
+      button.className = 'btn btn-success me-2';
       button.addEventListener('click', function () { spread_data('core', i - 1); });
       coreButtons.appendChild(button);
+      //coreButtons.appendChild(li);
     }
 
     const taskButtons = document.getElementById('taskButtons');
@@ -52,8 +113,10 @@
       const button = document.createElement('button');
       button.textContent = `Task ${i}`;
       button.id = `task${i}Button`;
+      button.className = 'btn btn-info me-2';
       button.addEventListener('click', function () { spread_data('task', i - 1); });
       taskButtons.appendChild(button);
+      //taskButtons.appendChild(li);
     }
 
     document.getElementById('line').addEventListener('click', function () { chart_type = 'line'; });
@@ -69,25 +132,25 @@
       return await data;
     }
     const typecheck = (type) => {
-      if (type == 'core'){
+      if (type == 'core') {
         return "task";
       } return "core";
     }
 
     async function spread_data(type, num) {
       let data = await getData(type, num);
-      if (!data){
+      if (!data) {
         return alert("파일이 입력되지 않았습니다.파일을 넣어주세요",);
       }
 
       const labels = new Array();
-      if (type == 'core'){
-        for(var i=0; i<tasknum; i++){
-          labels.push(`${typecheck(type)}`+`${i+1}`);
+      if (type == 'core') {
+        for (var i = 0; i < tasknum; i++) {
+          labels.push(`${typecheck(type)}` + `${i + 1}`);
         }
-      }else{
-        for(var i=0; i<corenum; i++){
-          labels.push(`${typecheck(type)}`+`${i+1}`);
+      } else {
+        for (var i = 0; i < corenum; i++) {
+          labels.push(`${typecheck(type)}` + `${i + 1}`);
         }
       }
 
@@ -108,17 +171,17 @@
           datasets: [{
             label: 'Min',
             data: minData,
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(0, 0, 255, 0.5)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
           }, {
             label: 'Max',
             data: maxData,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(255, 0, 0, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
           }, {
             label: 'Avg',
             data: avgData,
-            borderColor: 'rgba(255, 206, 86, 1)',
+            borderColor: 'rgba(100, 255, 30, 1)',
             backgroundColor: 'rgba(255, 206, 86, 0.2)',
           }]
         },
