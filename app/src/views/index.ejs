@@ -18,40 +18,42 @@
     <input type="submit">
   </form>
 
-  <button class="" id="core1Button">Core 1</button>
-  <button class="" id="core2Button">Core 2</button>
-  <button class="" id="core3Button">Core 3</button>
-  <button class="" id="core4Button">Core 4</button>
-  <button class="" id="core5Button">Core 5</button>
+  <!-- 코어 버튼 추가되는 위치 -->
+  <div id="coreButtons"></div>
   <br>
-  <button class="" id="task1Button">Task 1</button>
-  <button class="" id="task2Button">Task 2</button>
-  <button class="" id="task3Button">Task 3</button>
-  <button class="" id="task4Button">Task 4</button>
-  <button class="" id="task5Button">Task 5</button>
+  <!-- 태스크 버튼 추가되는 위치 -->
+  <div id="taskButtons"></div>
   <br>
+
   <button class="" id="line">line</button>
   <button class="" id="bar">bar</button>
   <button class="" id="doughnut">doughnut</button>
 
   <script>   
+    const corenum = '<%=data.corenum%>';
+    const tasknum = '<%=data.tasknum%>';
+
+    const coreButtons = document.getElementById('coreButtons');
+    for (let i = 1; i <= corenum; i++) {
+      const button = document.createElement('button');
+      button.textContent = `Core ${i}`;
+      button.id = `core${i}Button`;
+      button.addEventListener('click', function () { spread_data('core', i - 1); });
+      coreButtons.appendChild(button);
+    }
+
+    const taskButtons = document.getElementById('taskButtons');
+    for (let i = 1; i <= tasknum; i++) {
+      const button = document.createElement('button');
+      button.textContent = `Task ${i}`;
+      button.id = `task${i}Button`;
+      button.addEventListener('click', function () { spread_data('task', i - 1); });
+      taskButtons.appendChild(button);
+    }
+
     document.getElementById('line').addEventListener('click', function () { chart_type = 'line'; });
     document.getElementById('bar').addEventListener('click', function () { chart_type = 'bar'; });
     document.getElementById('doughnut').addEventListener('click', function () { chart_type = 'doughnut'; });
-
-    // 코어 버튼 이벤트 리스너 추가
-    document.getElementById('core1Button').addEventListener('click', function () { spread_data('core', 0); });
-    document.getElementById('core2Button').addEventListener('click', function () { spread_data('core', 1); });
-    document.getElementById('core3Button').addEventListener('click', function () { spread_data('core', 2); });
-    document.getElementById('core4Button').addEventListener('click', function () { spread_data('core', 3); });
-    document.getElementById('core5Button').addEventListener('click', function () { spread_data('core', 4); });
-
-    // 태스크 버튼 이벤트 리스너
-    document.getElementById('task1Button').addEventListener('click', function () { spread_data('task', 0); });
-    document.getElementById('task2Button').addEventListener('click', function () { spread_data('task', 1); });
-    document.getElementById('task3Button').addEventListener('click', function () { spread_data('task', 2); });
-    document.getElementById('task4Button').addEventListener('click', function () { spread_data('task', 3); });
-    document.getElementById('task5Button').addEventListener('click', function () { spread_data('task', 4); });
 
     let chart;
     let chart_type = 'line';
@@ -72,9 +74,7 @@
       if (!data){
         return alert("파일이 입력되지 않았습니다.파일을 넣어주세요",);
       }
-      console.log(data);
-      const corenum = '<%=data.corenum%>';
-      const tasknum = '<%=data.tasknum%>';
+
       const labels = new Array();
       if (type == 'core'){
         for(var i=0; i<tasknum; i++){
@@ -99,7 +99,7 @@
       chart = new Chart(profiler, {
         type: `${chart_type}`,
         data: {
-          labels: labels,//[typecheck(type)+"1", typecheck(type)+"2", typecheck(type)+"3", typecheck(type)+"4", typecheck(type)+"5"],
+          labels: labels,
           datasets: [{
             label: 'Min',
             data: minData,
@@ -127,7 +127,6 @@
       });
     }
   </script>
-  <p><%=data.corenum%></p>
 </body>
 
 </html>

@@ -33,23 +33,25 @@ const uploadFile = async (req, res) => {
 
                 try {
                     const corenum = Number(req.body.coreNum);
-                    const tasknum = Number(req.body.taskNum);
+                    const tasknum = Number(req.body.taskNum); 
                     await updateInputNumbers(corenum, tasknum);
-
                     const job = await parse(array, req.body.coreNum, req.body.taskNum);
                     push_core(job[0]);
                     console.log('push_core completed successfully');
                     push_task(job[1]);
                     console.log('push_task completed successfully');
-                    res.render('../views/index', {data: inputNumbers})
-                    res.redirect('/')
+
+                    delete require.cache[require.resolve('../../inputnumber')];
+                    const updatedInputNumbers = require('../../inputnumber');
+                    res.render('../views/index', { data: updatedInputNumbers });
+
                 } catch (err) {
                     res.status(400).send('<script>alert("오류입니다. input파일을 확인하세요"); window.location.href="/";</script>');
                 }
             }
         });
     } else {
-        res.render('../views/index', {data: inputNumbers})
+        res.send('/');
     }
 };
 
@@ -62,7 +64,7 @@ const updateInputNumbers = async (newCorenum, newTasknum) => {
   
   module.exports = inputNumbers;\n`;
 
-        await fs.writeFileSync('./inputnumber.js', content, 'utf8');
+        await fs.promises.writeFile('./inputnumber.js', content, 'utf8');
     } catch (e) {
         console.log('updateinputnumber error');
     }
