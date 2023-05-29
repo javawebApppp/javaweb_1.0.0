@@ -11,7 +11,7 @@ app.set("view engine", "ejs"); // 뷰 엔진 => ejs
 app.use("/", home);
 
 app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT} enter here! ${address}`);
+  console.log(`server is running on port ${PORT}. \t enter here! ${address}`);
 });
 
 module.exports = app;

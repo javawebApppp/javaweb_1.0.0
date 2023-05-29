@@ -20,15 +20,19 @@ const parse = async (array, coreNum, taskNum) => {
 
     if (ex.length != Number(taskNum)) {
       // 데이터가 누락된 경우
-      throw new Error();
+      throw new Error("데이터가 누락되었습니다.");
     }
 
     for (var k = 0; k < ex.length; k++) {
       try {
-        core[core_i].push(Number(ex[k])); // Number로 형 변환이 불가한 경우
-        task[k].push(Number(ex[k]));
+        if (!isNaN(Number(ex[k]))) {
+          core[core_i].push(Number(ex[k])); // Number로 형 변환이 불가한 경우
+          task[k].push(Number(ex[k]));
+        } else {
+          throw new Error();
+        }
       } catch (e) {
-        throw new e();
+        throw new Error("숫자만 입력할 수 있니다.");
       }
     }
     core_i++;

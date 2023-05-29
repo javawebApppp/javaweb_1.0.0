@@ -66,7 +66,7 @@ const uploadFile = async (req, res) => {
           res
             .status(400)
             .send(
-              '<script>alert("적절하지 못한 데이터 입니다. 다시 확인하세요"); window.location.href="/";</script>'
+              `<script>alert("${err.message}"); window.location.href="/";</script>`
             );
         }
       }
