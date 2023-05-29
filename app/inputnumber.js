@@ -1,5 +1,5 @@
 const inputNumbers = {
-    corenum: 3,
+    corenum: 5,
     tasknum: 5
   };
   
