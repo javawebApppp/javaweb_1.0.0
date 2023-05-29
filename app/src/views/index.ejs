@@ -20,7 +20,7 @@
     <nav class="navbar navbar-expand-lg fixed-top bg-dark">
       <div class="container">
         <div class="navbar-brand text-white">
-          <h1 class="mx-auto">Javaweb profiler</h1>
+          <h1 class="mx-auto"><a href="/" style="color:white;text-decoration:none">Javaweb profiler</a></h1>
         </div>
         <div class="text-white align-right">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
@@ -42,15 +42,16 @@
           </div>
           <div class="modal-body">
             <div>Javaweb Profiler를 이용하시려면 <b>단 한가지</b> 준비물이 필요합니다.</div>
-            <div>준비물은 바로 Core와 Task를 행과 열 형태로 구성된 데이터 파일입니다.</div>
+            <div>준비물은 바로 Core와 Task가 행과 열 형태로 구성된 데이터 파일입니다.</div>
             <br>
-            <div>• 데이터 파일을 파일 탐색기를 통해 선택해주시고, Core의 수, Task의 수를 입력해주세요</div>
+            <div>• 데이터 파일을 파일 탐색기를 통해 선택해주시고, Core의 수, Task의 수를 정확히 입력해주세요</div>
             <br>
             <div>• 입력이 완료되면 제출 버튼을 눌러주시고, 하단에 위치한 차트의 형태를 선택해주세요</div>
             <br>
-            <div>• 원하는 차트를 선택하셨다면, 시각화를 원하는 Core 혹은 Task를 선택하시면 됩니다.</div>
+            <div>• 원하는 차트를 선택하셨다면, 시각화를 원하는 Core 혹은 Task를 선택해주세요.</div>
             <br>
-            <div><b style="color:red;">만약 데이터 파일에 오류가 있거나 입력된 Core,Task의 수가 실제 데이터 파일과 일치하지 않는다면 오류가 발생하니, 유의하여 사용해주시기 바랍니다.</b></div>
+            <div><b style="color:red;">만약 데이터 파일에 오류가 있거나 입력된 Core,Task의 수가 실제 데이터 파일과 일치하지 않는다면 오류가 발생하니, 유의하여 사용해주시기
+                바랍니다.</b></div>
 
           </div>
           <div class="modal-footer">
@@ -101,6 +102,7 @@
   <script>
     const corenum = '<%=data.corenum%>';
     const tasknum = '<%=data.tasknum%>';
+    let text = "data visualization!"
 
     const coreButtons = document.getElementById('coreButtons');
     for (let i = 1; i <= corenum; i++) {
@@ -129,6 +131,10 @@
     let chart;
     let chart_type = 'line';
 
+    async function title(type, num) {
+      text = await `${type}${num + 1}에 대한 ${typecheck(type)} 분석 결과`;
+    }
+
     async function getData(type, num) {
       let response = await fetch(`/${type}/${num}`);
       let data = await response.json();
@@ -141,6 +147,7 @@
     }
 
     async function spread_data(type, num) {
+      await title(type, num);
       let data = await getData(type, num);
       if (!data) {
         return alert("파일이 입력되지 않았습니다.파일을 넣어주세요",);
@@ -193,6 +200,15 @@
           scales: {
             y: {
               beginAtZero: true
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: `${text}`,
+              font: {
+                size: 30
+              }
             }
           }
         },
